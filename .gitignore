@@ -1,0 +1,11 @@
+# Carpetas de dependencias de Node.js
+/node_modules
+/dist
+/build
+
+# Archivos temporales o de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de configuración de VS Code
+.vscode/
