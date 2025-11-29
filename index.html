@@ -1,877 +1,534 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
-    <head>
-
+<head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>MIKA Jabones & Velas Artesanales | Souvenirs y Regalos Personalizados</title>
 
-   
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
-
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
 
-
+    <link rel="preload" as="image" href="./assets/logoMika (2).svg"> 
+    <link rel="preload" as="image" href="./assets/01-sm.webp" type="image/webp">
+    <link rel="preload" as="image" href="./assets/02-sm.webp" type="image/webp">
+    <link rel="preload" as="image" href="./assets/03-sm.webp" type="image/webp">
+    
     <style>
-
-        /* Estilos generales y variables críticas */
-
-        :root {
-
-            --color-primary: #9996cb;      
-
-            --color-accent-blue: #81ccf1;  
-
-            --color-accent-pink: #d8a6cb;  
-
-            --color-accent-gold: #efc66a;  
-
-            --max-width: 120rem;          
-
-            --product-img-size: 30rem;
-
-        }
-
-
-
-        html {
-
-            font-size: 62.5%;
-
-            scroll-behavior: smooth;
-
-        }
-
-
-
-        body {
-
-            font-family: 'Roboto Mono', monospace,sans-serif;
-
-            margin: 0;
-
-            padding: 0;
-
-            background-color: #ffffff;
-
-            color: #333;
-
-            font-size: 1.6rem;
-
-            line-height: 1.5;
-
-        }
-
-
-
-        /* Estilos críticos para el Header y Navegación (visible en todos los viewports) */
-
+        /* Estilos críticos para el Header y Navegación */
         .main-header {
-
-            background-color: var(--color-accent-pink);
-
-            padding: 1rem 2rem;
-
+            background-color: #b698e3;
+            padding: 0; /* Eliminamos el padding aquí y lo ponemos en .content-wrapper */
             color: white;
-
-            max-width: var(--max-width);
-
+            /* >>> MODIFICACIÓN CLAVE: ELIMINAMOS EL MAX-WIDTH DEL HEADER <<< */
+            /* max-width: 120rem; */ 
             margin: 0 auto;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
+            /* El display:flex y justify-content se mueve a .content-wrapper */
         }
-
-
+        
+        /* NUEVO: Contenedor interno para centrar el header */
+        .main-header .content-wrapper { 
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+        }
 
         .brand-link {
-
             display: flex;
-
             align-items: center;
-
             text-decoration: none;
-
         }
-
-
 
         .logo {
-
             height: 5rem;
-
             width: 5rem;
-
             border-radius: 50%;
-
             object-fit: cover;
-
             margin-right: 1.5rem;
-
         }
-
-
 
         .brand-name {
-
             font-size: 1.8rem;
-
             font-weight: bold;
-
-            color: white;
-
+            /* CLS FIX: Asegura que el nombre de marca use Roboto Mono o fallback hasta que cargue la fuente */
+            font-family: 'Roboto Mono', monospace; 
+            /* Se establece el color final de alto contraste en style.css (CSS principal) */
         }
-
-       
 
         /* Estilos críticos para el Hero Section (LCP candidate) */
-
         .hero-section {
-
-            text-align: center;
-
-            background-color: var(--color-accent-gold);
-
-            color: var(--color-primary);
-
+            background-color: #ffebfb;
+            /* El color del texto principal ahora se establece en style.css para A11Y */
             margin: 0 auto 4rem auto;
-
-            padding: 3rem 2rem;
-
-            display: flex;
-
-            flex-direction: column;
-
-            align-items: center;
-
-            justify-content: center;
-
-            max-width: 1200px;
-
+            padding: 0; /* Eliminamos el padding aquí y lo ponemos en .content-wrapper */
+            /* El display:flex y align-items se mueve a .content-wrapper */
+            max-width: none; /* Aseguramos que ocupe todo el ancho */
         }
-
+        
+        /* NUEVO: Contenedor interno para centrar el hero */
+        .hero-section .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            max-width: 120rem; /* Mantenemos el límite del contenido */
+            margin: 0 auto;
+            text-align: center;
+        }
 
 
         .hero-image {
-
             border-radius: 50%;
-
             width: 100%;
-
             max-width: 450px;
-
-            aspect-ratio: 1 / 1;
-
+            /* CLS FIX: Mantiene el aspecto. Se usa width/height en el HTML */
+            aspect-ratio: 1 / 1; 
             object-fit: cover;
-
             height: auto;
-
         }
-
-       
 
         .whatsapp-float {
-
             position: fixed;
-
             bottom: 2rem;
-
             right: 2rem;
-
             width: 6rem;
-
             height: 6rem;
-
             z-index: 100;
-
         }
 
-       
-
         /* Estilos Mobile/Flexbox para el header, para evitar FOUC */
-
         @media (max-width: 57.6rem) {
-
-            .brand-name { display: none; }
-
-            .main-header { justify-content: center; }
-
-            .mobile-menu-toggle {
-
-                display: block;
-
-                background: none;
-
-                border: none;
-
-                font-size: 3rem;
-
-                color: white;
-
-                cursor: pointer;
-
+            .brand-name {
+                display: none;
             }
 
+            .main-header .content-wrapper {
+                justify-content: space-between;
+            }
+            .mobile-menu-toggle {
+                display: block;
+                background: none;
+                border: none;
+                font-size: 3rem;
+                color: white;
+                cursor: pointer;
+            }
         }
 
         @media (min-width: 76.8rem) {
-
-            .main-nav ul { list-style: none; padding: 0; margin: 0; display: flex; }
-
-            .main-nav li { margin-left: 2.5rem; }
-
-            .mobile-menu-toggle { display: none; }
-
-            .hero-section {
-
-                text-align: left;
-
-                flex-direction: row;
-
-                justify-content: space-between;
-
-                align-items: center;
-
-                padding: 3rem 4rem;
-
+            .main-nav ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                display: flex;
             }
 
-            .hero-content { flex-basis: 55%; max-width: none; text-align: left; }
+            .main-nav li {
+                margin-left: 2.5rem;
+            }
 
-            .hero-image-container { flex-basis: 40%; margin-top: 0; justify-content: flex-end; }
+            .mobile-menu-toggle {
+                display: none;
+            }
+            
+            /* Ajuste del envoltorio para escritorio */
+            .hero-section .content-wrapper {
+                text-align: left;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 3rem 4rem;
+                gap: 3rem; 
+            }
 
+            .hero-content {
+                flex-basis: 55%;
+                max-width: none;
+                text-align: left;
+            }
+
+            .hero-image-container {
+                flex-basis: 40%;
+                margin-top: 0;
+                justify-content: flex-end;
+            }
         }
-
     </style>
 
-   
-
-    <link rel="preload" href="style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-
+    <link rel="stylesheet" href="style.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="style.css"></noscript>
-
-   
-
-    <link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap">
-
-    <noscript>
-
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap">
-
-    </noscript>
-
-
-
+    
     <link rel="shortcut icon" href="./assets/logoMika.jpg" type="image/jpeg">
-
-    <link rel="preload" as="image" href="./assets/08.jpg">
-
-    <link rel="preload" as="image" href="./assets/02.jpg">
-
-    <link rel="preload" as="image" href="./assets/03.jpg">
-
-
-
-</head>
+    </head>
 
 <body>
-
-   
-
-    <header class="main-header">
-
-        <div class="logo-container">
-
+<header class="main-header">
+    <div class="content-wrapper"> <div class="logo-container">
             <a href="#home" class="brand-link" aria-label="Ir al inicio - MIKA Jabones y Velas">
-
-                <img src="./assets/logoMika.jpg" alt="Logo MIKA Jabones & Velas Artesanales" class="logo" width="50" height="50">
-
-                <span class="brand-name">MIKA Jabones & Velas Artesanales</span>
-
+            <img src="./assets/logoMika.jpg" alt="Logo MIKA Jabones & Velas Artesanales" class="logo" width="50" height="50">
+            <span class="brand-name">MIKA Jabones & Velas Artesanales</span>
             </a>
-
         </div>
 
-       
-
-        <nav class="main-nav" id="main-menu" aria-label="Menú principal">
-
-            <ul>
-
-                <li><a href="#home">Home</a></li>
-
-                <li><a href="#souvenirs-main">Souvenirs</a></li>
-
-                <li><a href="#jabones">Jabones</a></li>
-
-                <li><a href="#velas">Velas</a></li>
-
-            </ul>
-
-        </nav>
-
-
-
         <button class="mobile-menu-toggle" aria-label="Abrir menú de navegación" aria-controls="main-menu" aria-expanded="false">
-
-            ☰
-
+        ☰
         </button>
 
-    </header>
+        <nav class="main-nav" id="main-menu" aria-label="Menú principal">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#souvenirs-main">Souvenirs</a></li>
+                <li><a href="#jabones">Jabones</a></li>
+                <li><a href="#velas">Velas</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
 
-   
+<main>
+<section id="home" class="hero-section">
+    <div class="content-wrapper"> <div class="hero-content">
+            <h1>Regala Recuerdos Únicos: Souvenirs Artesanales para tu Evento</h1>
+            <p>Transformamos jabones y velas en el detalle perfecto para bodas, cumpleaños, baby showers y más. Personalización al 100%.</p>
 
-    <main>
+            <a href="https://www.instagram.com/JabonesMika" target="_blank" class="cta-button instagram-button">
+            <img src="./assets/00Instagram.svg" alt="" aria-hidden="true" class="cta-icon" width="20" height="20">
+            ¡Síguenos en Instagram!
+            </a>
+        </div>
 
-        <section id="home" class="hero-section">
+        <div class="hero-image-container">
+            <img src="./assets/logoMika (2).svg" alt="Souvenirs Artesanales de Jabón y Vela" class="hero-image" width="450" height="450" fetchpriority="high">
+        </div>
+    </div>
+</section>
 
-            <div class="hero-content">
+<section id="carousel-section" aria-label="Galería de estilos destacados">
+    <div class="content-wrapper"> <h2>Consulta por la variedad en estilos!!</h2>
 
-                <h1>Regala Recuerdos Únicos: Souvenirs Artesanales para tu Evento</h1>
+        <div class="carousel-wrapper">
+            <div class="carousel-container" role="region" aria-live="polite" aria-label="Carrusel de imágenes" tabindex="0">
+                <div class="carousel-item" data-title="Souvenir floral">
+                    <a href="#souvenirs-main" aria-label="Ir a Souvenirs: Souvenir floral">
+                        <picture> 
+                            <source 
+                                srcset="./assets/01-sm.webp 500w, ./assets/01-md.webp 800w, ./assets/01-lg.webp 1200w"
+                                sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 300px" type="image/webp">
+                            <img class="carousel-img" src="./assets/01.jpg" alt="Souvenir diseño floral" width="300" height="300">
+                        </picture>
+                    </a>
+                </div>
 
-                <p>Transformamos jabones y velas en el detalle perfecto para bodas, cumpleaños, baby showers y más. Personalización al 100%.</p>
-
-               
-
-                <a href="https://www.instagram.com/JabonesMika" target="_blank" class="cta-button instagram-button" aria-label="Síguenos en Instagram (Se abre en nueva pestaña)">
-
-                    <img src="./assets/00Instagram.svg" alt="" aria-hidden="true" class="cta-icon" width="20" height="20">
-
-                    ¡Síguenos en Instagram!
-
-                </a>
-
+                <div class="carousel-item" data-title="Souvenir de corazón">
+                    <a href="#souvenirs-main" aria-label="Ir a Souvenirs: Souvenir de corazón">
+                        <picture> 
+                            <source srcset="./assets/02-sm.webp 500w, ./assets/02-md.webp 800w, ./assets/02-lg.webp 1200w" sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 300px" type="image/webp">
+                            <img class="carousel-img" src="./assets/02.jpg" alt="Souvenir de corazón" loading="lazy" width="300" height="300">
+                        </picture>
+                    </a>
+                </div>
+                <div class="carousel-item" data-title="Jabón orgánico">
+                    <a href="#jabones" aria-label="Ir a Jabones: Jabón orgánico">
+                        <picture> 
+                            <source srcset="./assets/03-sm.webp 500w, ./assets/03-md.webp 800w, ./assets/03-lg.webp 1200w" sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 300px" type="image/webp">
+                            <img class="carousel-img" src="./assets/03.jpg" alt="Jabón orgánico" loading="lazy" width="300" height="300">
+                        </picture>
+                    </a>
+                </div>
+                <div class="carousel-item" data-title="Vela de soja premium">
+                    <a href="#velas" aria-label="Ir a Velas: Vela de soja premium">
+                        <picture> 
+                            <source srcset="./assets/04-sm.webp 500w, ./assets/04-md.webp 800w, ./assets/04-lg.webp 1200w" sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 300px" type="image/webp">
+                            <img class="carousel-img" src="./assets/04.jpg" alt="Vela de soja premium" loading="lazy" width="300" height="300">
+                        </picture>
+                    </a>
+                </div>
+                <div class="carousel-item" data-title="Souvenir de estrella">
+                    <a href="#souvenirs-main" aria-label="Ir a Souvenirs: Souvenir de estrella">
+                        <picture> 
+                            <source srcset="./assets/05-sm.webp 500w, ./assets/05-md.webp 800w, ./assets/05-lg.webp 1200w" sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 300px" type="image/webp">
+                            <img class="carousel-img" src="./assets/05.jpg" alt="Souvenir de estrella" loading="lazy" width="300" height="300">
+                        </picture>
+                    </a>
+                </div>
+                <div class="carousel-item" data-title="Jabón exfoliante">
+                    <a href="#jabones" aria-label="Ir a Jabones: Jabón exfoliante">
+                        <picture> 
+                            <source srcset="./assets/06-sm.webp 500w, ./assets/06-md.webp 800w, ./assets/06-lg.webp 1200w" sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 300px" type="image/webp">
+                            <img class="carousel-img" src="./assets/06.jpg" alt="Jabón exfoliante" loading="lazy" width="300" height="300">
+                        </picture>
+                    </a>
+                </div>
+                <div class="carousel-item" data-title="Vela rústica">
+                    <a href="#velas" aria-label="Ir a Velas: Vela rústica">
+                        <picture> 
+                            <source srcset="./assets/07-sm.webp 500w, ./assets/07-md.webp 800w, ./assets/07-lg.webp 1200w" sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 300px" type="image/webp">
+                            <img class="carousel-img" src="./assets/07.jpg" alt="Vela rústica" loading="lazy" width="300" height="300">
+                        </picture>
+                    </a>
+                </div>
+                <div class="carousel-item" data-title="Jabón en barra">
+                    <a href="#jabones" aria-label="Ir a Jabones: Jabón en barra">
+                        <picture> 
+                            <source srcset="./assets/08-sm.webp 500w, ./assets/08-md.webp 800w, ./assets/08-lg.webp 1200w" sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 300px" type="image/webp">
+                            <img class="carousel-img" src="./assets/08.jpg" alt="Jabón en barra" loading="lazy" width="300" height="300">
+                        </picture>
+                    </a>
+                </div>
+                <div class="carousel-item" data-title="Souvenir baby shower">
+                    <a href="#souvenirs-main" aria-label="Ir a Souvenirs: Souvenir baby shower">
+                        <picture> 
+                            <source srcset="./assets/09-sm.webp 500w, ./assets/09-md.webp 800w, ./assets/09-lg.webp 1200w" sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 300px" type="image/webp">
+                            <img class="carousel-img" src="./assets/09.jpg" alt="Souvenir baby shower" loading="lazy" width="300" height="300">
+                        </picture>
+                    </a>
+                </div>
+                <div class="carousel-item" data-title="Vela perfumada">
+                    <a href="#velas" aria-label="Ir a Velas: Vela perfumada">
+                        <picture> 
+                            <source srcset="./assets/10-sm.webp 500w, ./assets/10-md.webp 800w, ./assets/10-lg.webp 1200w" sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 300px" type="image/webp">
+                            <img class="carousel-img" src="./assets/10.jpg" alt="Vela perfumada" loading="lazy" width="300" height="300">
+                        </picture>
+                    </a>
+                </div>
+                <div class="carousel-item" data-title="Jabón con hierbas">
+                    <a href="#jabones" aria-label="Ir a Jabones: Jabón con hierbas">
+                        <picture> 
+                            <source srcset="./assets/11-sm.webp 500w, ./assets/11-md.webp 800w, ./assets/11-lg.webp 1200w" sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 300px" type="image/webp">
+                            <img class="carousel-img" src="./assets/11.jpg" alt="Jabón con hierbas" loading="lazy" width="300" height="300">
+                        </picture>
+                    </a>
+                </div>
+                <div class="carousel-item" data-title="Souvenir de boda">
+                    <a href="#souvenirs-main" aria-label="Ir a Souvenirs: Souvenir de boda">
+                        <picture> 
+                            <source srcset="./assets/12-sm.webp 500w, ./assets/12-md.webp 800w, ./assets/12-lg.webp 1200w" sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 300px" type="image/webp">
+                            <img class="carousel-img" src="./assets/12.jpg" alt="Souvenir de boda" loading="lazy" width="300" height="300">
+                        </picture>
+                    </a>
+                </div>
+                <div class="carousel-item" data-title="Vela de recipiente">
+                    <a href="#velas" aria-label="Ir a Velas: Vela de recipiente">
+                        <picture> 
+                            <source srcset="./assets/13-sm.webp 500w, ./assets/13-md.webp 800w, ./assets/13-lg.webp 1200w" sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 300px" type="image/webp">
+                            <img class="carousel-img" src="./assets/13.jpg" alt="Vela de recipiente" loading="lazy" width="300" height="300">
+                        </picture>
+                    </a>
+                </div>
+                <div class="carousel-item" data-title="Jabón de forma especial">
+                    <a href="#jabones" aria-label="Ir a Jabones: Jabón de forma especial">
+                        <picture> 
+                            <source srcset="./assets/14-sm.webp 500w, ./assets/14-md.webp 800w, ./assets/14-lg.webp 1200w" sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 300px" type="image/webp">
+                            <img class="carousel-img" src="./assets/14.jpg" alt="Jabón de forma especial" loading="lazy" width="300" height="300">
+                        </picture>
+                    </a>
+                </div>
+                <div class="carousel-item" data-title="Souvenir cumpleaños">
+                    <a href="#souvenirs-main" aria-label="Ir a Souvenirs: Souvenir cumpleaños">
+                        <picture> 
+                            <source srcset="./assets/15-sm.webp 500w, ./assets/15-md.webp 800w, ./assets/15-lg.webp 1200w" sizes="(max-width: 600px) 100vw, (max-width: 1000px) 50vw, 300px" type="image/webp">
+                            <img class="carousel-img" src="./assets/15.jpg" alt="Souvenir cumpleaños" loading="lazy" width="300" height="300">
+                        </picture>
+                    </a>
+                </div>
             </div>
 
+            <button class="nav-arrow prev-arrow" aria-label="Ver imagen anterior">&#10094;</button>
+            <button class="nav-arrow next-arrow" aria-label="Ver imagen siguiente">&#10095;</button>
+        </div>
+    </div>
+</section>
 
+<section id="souvenirs-main" class="product-category product-category1">
+    <div class="content-wrapper"> <h2>Souvenirs Personalizados para Celebraciones </h2>
+        <p>Creamos el detalle perfecto que tus invitados recordarán. Elige forma, aroma y color.</p>
+        <div class="product-grid">
+            <div class="product-item">
+                <picture>
+                    <source 
+                                srcset="./assets/16-sm.webp 500w, 
+                                        ./assets/16-md.webp 800w, 
+                                        ./assets/16-lg.webp 1200w"
+                            
+                                sizes="(max-width: 600px) 100vw, 
+                                        (max-width: 1000px) 50vw, 
+                                        300px" 
+                        type="image/webp">
+                    <img src="./assets/16.jpg" alt="Souvenir de jabón con iniciales" loading="lazy" width="800" height="800"> 
+                </picture>
 
-            <div class="hero-image-container">
+                <h3>Jabones con Iniciales</h3>
+            </div>
+            <div class="product-item">
+                <picture>
+                    <source 
+                            srcset="./assets/17-sm.webp 500w, 
+                                    ./assets/17-md.webp 800w, 
+                                    ./assets/17-lg.webp 1200w"
+                            
+                                sizes="(max-width: 600px) 100vw, 
+                                        (max-width: 1000px) 50vw, 
+                                        300px" 
+                        type="image/webp">
+                    <img src="./assets/17.jpg" alt="Velas en latas personalizadas" loading="lazy" width="780" height="781">
+                </picture>
 
-                <img src="./assets/logoMika (2).svg" alt="Souvenirs Artesanales de Jabón y Vela" class="hero-image" width="450" height="450">
-
+                <h3>Velas en Latas</h3>
             </div>
 
-        </section>
-
-       
-
-        <section id="carousel-section" aria-label="Galería de estilos destacados">
-
-            <h2>Consulta por la variedad en estilos!!</h2>
-
-           
-
-            <div class="carousel-wrapper">
-
-                <button class="nav-arrow prev-arrow" aria-label="Ver imagen anterior">&#10094;</button>
-
-
-
-                <div class="carousel-container" role="region" aria-live="off" aria-label="Carrusel de imágenes" tabindex="0">
-
-                   
-
-                    <div class="carousel-item">
-
-                        <a href="#souvenirs-main" aria-label="Ir a Souvenirs: Souvenir diseño floral">
-
-                            <picture>
-
-                                <source srcset="./assets/08.webp" type="image/webp">
-
-                                <img class="carousel-img" src="./assets/08.jpg" alt="Souvenir diseño floral" width="300" height="300">
-
-                            </picture>
-
-                        </a>
-
-                    </div>
-
-                   
-
-                    <div class="carousel-item">
-
-                        <a href="#souvenirs-main" aria-label="Ir a Souvenirs: Souvenir nube bautismo">
-
-                            <picture>
-
-                                <source srcset="./assets/02.webp" type="image/webp">
-
-                                <img class="carousel-img" src="./assets/02.jpg" alt="Souvenir nube bautismo" width="300" height="300">
-
-                            </picture>
-
-                        </a>
-
-                    </div>
-
-                   
-
-                    <div class="carousel-item">
-
-                        <a href="#jabones" aria-label="Ir a Jabones: Jabón herbal">
-
-                            <picture>
-
-                                <source srcset="./assets/03.webp" type="image/webp">
-
-                                <img class="carousel-img" src="./assets/03.jpg" alt="Jabón herbal" width="300" height="300">
-
-                            </picture>
-
-                        </a>
-
-                    </div>
-
-                   
-
-                    <div class="carousel-item">
-
-                        <a href="#velas" aria-label="Ir a Velas: Vela aromática en vaso">
-
-                            <picture>
-
-                                <source srcset="./assets/04.webp" type="image/webp">
-
-                                <img class="carousel-img" src="./assets/04.jpg" alt="Vela aromática en vaso" width="300" height="300">
-
-                            </picture>
-
-                        </a>
-
-                    </div>
-
-                   
-
-                    <div class="carousel-item">
-
-                        <a href="#souvenirs-main" aria-label="Ir a Souvenirs: Souvenirs varios">
-
-                            <picture>
-
-                                <source srcset="./assets/05.webp" type="image/webp">
-
-                                <img class="carousel-img" src="./assets/05.jpg" alt="Souvenirs varios" width="300" height="300">
-
-                            </picture>
-
-                        </a>
-
-                    </div>
-
-                   
-
-                    <div class="carousel-item">
-
-                        <a href="#jabones" aria-label="Ir a Jabones: Jabón temático celebración">
-
-                            <picture>
-
-                                <source srcset="./assets/06.webp" type="image/webp">
-
-                                <img class="carousel-img" src="./assets/06.jpg" alt="Jabón temático celebración" width="300" height="300">
-
-                            </picture>
-
-                        </a>
-
-                    </div>
-
-                   
-
-                    <div class="carousel-item">
-
-                        <a href="#velas" aria-label="Ir a Velas: Velas de soja rústicas">
-
-                            <picture>
-
-                                <source srcset="./assets/07.webp" type="image/webp">
-
-                                <img class="carousel-img" src="./assets/07.jpg" alt="Velas de soja rústicas" width="300" height="300">
-
-                            </picture>
-
-                        </a>
-
-                    </div>
-
-
-
-                    <div class="carousel-item">
-
-                        <a href="#souvenirs-main" aria-label="Ir a Souvenirs: Souvenir corazón">
-
-                            <picture>
-
-                                <source srcset="./assets/09.webp" type="image/webp">
-
-                                <img class="carousel-img" src="./assets/09.jpg" alt="Souvenir corazón" width="300" height="300">
-
-                            </picture>
-
-                        </a>
-
-                    </div>
-
-
-
-                    <div class="carousel-item">
-
-                        <a href="#jabones" aria-label="Ir a Jabones: Jabón exfoliante de café">
-
-                            <picture>
-
-                                <source srcset="./assets/10.webp" type="image/webp">
-
-                                <img class="carousel-img" src="./assets/10.jpg" alt="Jabón exfoliante de café" width="300" height="300">
-
-                            </picture>
-
-                        </a>
-
-                    </div>
-
-
-
-                    <div class="carousel-item">
-
-                        <a href="#velas" aria-label="Ir a Velas: Velas florales flotantes">
-
-                            <picture>
-
-                                <source srcset="./assets/12.webp" type="image/webp">
-
-                                <img class="carousel-img" src="./assets/12.jpg" alt="Velas florales flotantes" width="300" height="300">
-
-                            </picture>
-
-                        </a>
-
-                    </div>
-
-                   
-
-                    <div class="carousel-item">
-
-                        <a href="#souvenirs-main" aria-label="Ir a Souvenirs: Kit de regalo boda">
-
-                            <picture>
-
-                                <source srcset="./assets/10.webp" type="image/webp">
-
-                                <img class="carousel-img" src="./assets/10.jpg" alt="Kit de regalo boda" width="300" height="300">
-
-                            </picture>
-
-                        </a>
-
-                    </div>
-
-
-
-                    <div class="carousel-item">
-
-                        <a href="#jabones" aria-label="Ir a Jabones: Jabón con incrustaciones">
-
-                            <picture>
-
-                                <source srcset="./assets/03.webp" type="image/webp">
-
-                                <img class="carousel-img" src="./assets/03.jpg" alt="Jabón con incrustaciones" width="300" height="300">
-
-                            </picture>
-
-                        </a>
-
-                    </div>
-
-                   
-
-                    <div class="carousel-item">
-
-                        <a href="#velas" aria-label="Ir a Velas: Velas de cumpleaños coloridas">
-
-                            <picture>
-
-                                <source srcset="./assets/05.webp" type="image/webp">
-
-                                <img class="carousel-img" src="./assets/05.jpg" alt="Velas de cumpleaños coloridas" width="300" height="300">
-
-                            </picture>
-
-                        </a>
-
-                    </div>
-
-                   
-
-                    <div class="carousel-item">
-
-                        <a href="#souvenirs-main" aria-label="Ir a Souvenirs: Souvenir con mensaje">
-
-                            <picture>
-
-                                <source srcset="./assets/07.webp" type="image/webp">
-
-                                <img class="carousel-img" src="./assets/07.jpg" alt="Souvenir con mensaje" width="300" height="300">
-
-                            </picture>
-
-                        </a>
-
-                    </div>
-
-                   
-
-                    <div class="carousel-item">
-
-                        <a href="#jabones" aria-label="Ir a Jabones: Jabón de lavanda">
-
-                            <picture>
-
-                                <source srcset="./assets/08.webp" type="image/webp">
-
-                                <img class="carousel-img" src="./assets/08.jpg" alt="Jabón de lavanda" width="300" height="300">
-
-                            </picture>
-
-                        </a>
-
-                    </div>
-
-
-
-                </div>
-
-
-
-                <button class="nav-arrow next-arrow" aria-label="Ver imagen siguiente">&#10095;</button>
-
+            <div class="product-item">
+                <picture>
+                    <source 
+                            srcset="./assets/17b-sm.webp 500w, 
+                                    ./assets/17b-md.webp 800w, 
+                                    ./assets/17b-lg.webp 1200w"
+                            
+                                sizes="(max-width: 600px) 100vw, 
+                                        (max-width: 1000px) 50vw, 
+                                        300px" 
+                        type="image/webp">
+                    <img src="./assets/17b.jpg" alt="Velas souvenir personalizadas" loading="lazy" width="800" height="800">
+                </picture>
+
+                <h3>Velas souvenir personalizadas</h3>
             </div>
+        </div>
+    </div>
+</section>
 
-        </section>
+<section id="jabones" class="product-category product-category2">
+    <div class="content-wrapper"> <h2>Nuestra Colección de Jabones Artesanales</h2>
+        <p>Enriquecidos con aceites naturales y fragancias exquisitas. Ideales para el cuidado diario.</p>
+        <div class="product-grid">
+            <div class="product-item">
+                <picture>
+                    <source 
+                            srcset="./assets/18-sm.webp 500w, 
+                                    ./assets/18-md.webp 800w, 
+                                    ./assets/18-lg.webp 1200w"
+                            
+                                sizes="(max-width: 600px) 100vw, 
+                                        (max-width: 1000px) 50vw, 
+                                        300px" 
+                        type="image/webp">
+                    <img src="./assets/18.jpg" alt="Jabón de avena y miel" loading="lazy" width="800" height="800">
+                </picture>
 
-
-
-        <section id="souvenirs-main" class="product-category product-category1">
-
-            <h2>Souvenirs Personalizados para Celebraciones</h2>
-
-            <p>Creamos el detalle perfecto que tus invitados recordarán. Elige forma, aroma y color.</p>
-
-            <div class="product-grid">
-
-                <div class="product-item">
-
-                    <a href="https://wa.me/5491168280718?text=Hola,%20vi%20la%20web%20y%20quiero%20consultar%20por%20los%20Jabones%20con%20Iniciales" target="_blank" aria-label="Consultar por WhatsApp sobre Jabones con Iniciales">
-
-                        <picture>
-
-                            <source srcset="./assets/11.webp" type="image/webp">
-
-                            <img src="./assets/11.jpg" alt="Souvenir de jabón con iniciales" width="300" height="300">
-
-                        </picture>
-
-                    </a>
-
-                    <h3>Jabones con Iniciales</h3>
-
-                </div>
-
-                <div class="product-item">
-
-                    <a href="https://wa.me/5491168280718?text=Hola,%20vi%20la%20web%20y%20quiero%20consultar%20por%20las%20Velas%20en%20Latas" target="_blank" aria-label="Consultar por WhatsApp sobre Velas en Latas">
-
-                        <picture>
-
-                            <source srcset="./assets/10.webp" type="image/webp">
-
-                            <img src="./assets/10.jpg" alt="Velas en latas personalizadas" width="300" height="300">
-
-                        </picture>
-
-                    </a>
-
-                    <h3>Velas en Latas</h3>
-
-                </div>
-
+                <h3>Jabón de Avena y Miel</h3>
             </div>
+            <div class="product-item">
+                <picture>
+                    <source 
+                            srcset="./assets/19-sm.webp 500w, 
+                                    ./assets/19-md.webp 800w, 
+                                    ./assets/19-lg.webp 1200w"
+                            
+                                sizes="(max-width: 600px) 100vw, 
+                                        (max-width: 1000px) 50vw, 
+                                        300px" 
+                        type="image/webp">
+                    <img src="./assets/19.jpg" alt="Jabón de carbón activado" loading="lazy" width="780" height="781">
+                </picture>
 
-        </section>
-
-
-
-        <section id="jabones" class="product-category product-category2">
-
-            <h2>Nuestra Colección de Jabones Artesanales</h2>
-
-            <p>Enriquecidos con aceites naturales y fragancias exquisitas. Ideales para el cuidado diario.</p>
-
-            <div class="product-grid">
-
-                <div class="product-item">
-
-                    <a href="https://wa.me/5491168280718?text=Hola,%20me%20interesa%20el%20Jabón%20de%20Avena%20y%20Miel" target="_blank" aria-label="Consultar por WhatsApp sobre Jabón de Avena y Miel">
-
-                        <picture>
-
-                            <source srcset="./assets/12.webp" type="image/webp">
-
-                            <img src="./assets/12.jpg" alt="Jabón de avena y miel" width="300" height="300">
-
-                        </picture>
-
-                    </a>
-
-                    <h3>Jabón de Avena y Miel</h3>
-
-                </div>
-
-                <div class="product-item">
-
-                    <a href="https://wa.me/5491168280718?text=Hola,%20me%20interesa%20el%20Jabón%20Detox%20de%20carbón" target="_blank" aria-label="Consultar por WhatsApp sobre Jabón Detox">
-
-                        <picture>
-
-                            <source srcset="./assets/11.webp" type="image/webp">
-
-                            <img src="./assets/11.jpg" alt="Jabón de carbón activado" width="300" height="300">
-
-                        </picture>
-
-                    </a>
-
-                    <h3>Jabón Detox</h3>
-
-                </div>
-
-                <div class="product-item">
-
-                    <a href="https://wa.me/5491168280718?text=Hola,%20me%20interesa%20el%20Jabón%20Floral" target="_blank" aria-label="Consultar por WhatsApp sobre Jabón Floral">
-
-                        <picture>
-
-                            <source srcset="./assets/09.webp" type="image/webp">
-
-                            <img src="./assets/09.jpg" alt="Jabón con pétalos de rosa" width="300" height="300">
-
-                        </picture>
-
-                    </a>
-
-                    <h3>Jabón Floral</h3>
-
-                </div>
-
+                <h3>Jabón Detox</h3>
             </div>
+            <div class="product-item">
 
-        </section>
+                <picture>
+                    <source 
+                            srcset="./assets/20-sm.webp 500w, 
+                                    ./assets/20-md.webp 800w, 
+                                    ./assets/20-lg.webp 1200w"
+                            
+                                sizes="(max-width: 600px) 100vw, 
+                                        (max-width: 1000px) 50vw, 
+                                        300px" 
+                        type="image/webp">
+                    <img src="./assets/20.jpg" alt="Jabón con pétalos de rosa" loading="lazy" width="800" height="800">
+                </picture>
 
-
-
-        <section id="velas" class="product-category product-category3">
-
-            <h2>Velas Aromáticas y Decorativas</h2>
-
-            <p>Crea el ambiente perfecto con nuestras velas de soja de larga duración.</p>
-
-            <div class="product-grid">
-
-                <div class="product-item">
-
-                    <a href="https://wa.me/5491168280718?text=Hola,%20me%20interesa%20la%20Vela%20de%20Sándalo" target="_blank" aria-label="Consultar por WhatsApp sobre Vela Sándalo">
-
-                        <picture>
-
-                            <source srcset="./assets/06.webp" type="image/webp">
-
-                            <img src="./assets/06.jpg" alt="Vela aromática de sándalo" width="300" height="300">
-
-                        </picture>
-
-                    </a>
-
-                    <h3>Vela Sándalo</h3>
-
-                </div>
-
-                <div class="product-item">
-
-                    <a href="https://wa.me/5491168280718?text=Hola,%20me%20interesa%20la%20Vela%20de%20Coco" target="_blank" aria-label="Consultar por WhatsApp sobre Vela de Coco">
-
-                        <picture>
-
-                            <source srcset="./assets/08.webp" type="image/webp">
-
-                            <img src="./assets/08.jpg" alt="Vela decorativa de coco" width="300" height="300">
-
-                        </picture>
-
-                    </a>
-
-                    <h3>Vela de Coco</h3>
-
-                </div>
-
-                <div class="product-item">
-
-                    <a href="https://wa.me/5491168280718?text=Hola,%20me%20interesa%20la%20Vela%20en%20Vaso" target="_blank" aria-label="Consultar por WhatsApp sobre Vela Vaso">
-
-                        <picture>
-
-                            <source srcset="./assets/04.webp" type="image/webp">
-
-                            <img src="./assets/04.jpg" alt="Vela de soja en vaso de vidrio" width="300" height="300">
-
-                        </picture>
-
-                    </a>
-
-                    <h3>Vela Vaso</h3>
-
-                </div>
-
+                <h3>Jabón Floral</h3>
             </div>
+        </div>
+    </div>
+</section>
 
-        </section>
+<section id="velas" class="product-category product-category3">
+    <div class="content-wrapper"> <h2>Velas Aromáticas y Decorativas</h2>
+        <p>Crea el ambiente perfecto con nuestras velas de soja de larga duración.</p>
+        <div class="product-grid">
+            <div class="product-item">
+                <picture>
+                    <source 
+                            srcset="./assets/21-sm.webp 500w, 
+                                    ./assets/21-md.webp 800w, 
+                                    ./assets/21-lg.webp 1200w"
+                            
+                                sizes="(max-width: 600px) 100vw, 
+                                        (max-width: 1000px) 50vw, 
+                                        300px" 
+                        type="image/webp">
+                    <img src="./assets/21.jpg" alt="Vela aromática de sándalo" loading="lazy" width="800" height="800">
+                </picture>
+                <h3>Vela Sándalo</h3>
+            </div>
+            <div class="product-item">
+                <picture>
+                    <source 
+                            srcset="./assets/22-sm.webp 500w, 
+                                    ./assets/22-md.webp 800w, 
+                                    ./assets/22-lg.webp 1200w"
+                            
+                                sizes="(max-width: 600px) 100vw, 
+                                        (max-width: 1000px) 50vw, 
+                                        300px" 
+                        type="image/webp">
+                    <img src="./assets/22.jpg" alt="Vela decorativa de coco" loading="lazy" width="800" height="800">
+                </picture>
+                <h3>Vela de Coco</h3>
+            </div>
+            <div class="product-item">
+                <picture>
+                    <source 
+                            srcset="./assets/23-sm.webp 500w, 
+                                    ./assets/23-md.webp 800w, 
+                                    ./assets/23-lg.webp 1200w"
+                            
+                                sizes="(max-width: 600px) 100vw, 
+                                        (max-width: 1000px) 50vw, 
+                                        300px" 
+                        type="image/webp">
+                    <img src="./assets/23.jpg" alt="Vela de soja en vaso de vidrio" loading="lazy" width="800" height="800">
+                </picture>
+                <h3>Vela Vaso</h3>
+            </div>
+        </div>
+    </div>
+</section>
 
-       
+</main>
 
-    </main>
+<footer>
+<p>&copy; 2025 MIKA Jabones & Velas Artesanales. Todos los derechos reservados.</p>
+</footer>
 
+<a href="#" class="whatsapp-float whatsapp-link" data-msg="Hola, estoy viendo su web y tengo una consulta general..." target="_blank" aria-label="Abrir chat de WhatsApp con MIKA">
+<img src="./assets/01whatsapp.svg" alt="" aria-hidden="true" width="60" height="60">
+</a>
 
+<script>
+    // Objeto global para almacenar todas las constantes.
+    const MIKA_CONFIG = {
+        whatsappNumber: "5491168280718",
+        assetsPath: "./assets/" // Ruta base de los activos si alguna vez cambia.
+    };
+</script>
 
-    <footer>
-
-        <p>&copy; 2025 MIKA Jabones & Velas Artesanales. Todos los derechos reservados.</p>
-
-        <a href="https://wa.me/5491168280718?text=Hola,%20estoy%20viendo%20su%20web%20y%20tengo%20una%20consulta..." class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
-
-            <img src="./assets/01whatsapp.svg" alt="" aria-hidden="true" width="60" height="60">
-
-        </a>
-
-    </footer>
-
-   
-
-    <script src="./script.js" defer></script>
-
-   
+<script src="./script.js" defer></script>
 
 </body>
-
-</html> 
+</html>

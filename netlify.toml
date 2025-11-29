@@ -1,0 +1,33 @@
+# =========================================================
+# NETLIFY CONFIGURATION
+# =========================================================
+
+# NOTA CRÍTICA:
+# Para obtener el 100/100, Netlify debe servir los archivos
+# como "style.min.css" y "script.min.js". Se asume que estos
+# archivos ya fueron minificados localmente o en tu pipeline.
+
+
+# 1. SEGURIDAD - HEADERS CRÍTICOS
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Previene Clickjacking
+    X-Frame-Options = "DENY"
+    # Previene MIME-sniffing
+    X-Content-Type-Options = "nosniff"
+    # Política de Referrer
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    # HSTS - Forzar HTTPS
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    
+    # Content Security Policy (CSP) AJUSTADA:
+    # Agrega 'https://wa.me' para enlaces de WhatsApp
+    # Agrega 'data:' para imágenes base64 o inlined SVG
+    Content-Security-Policy = "default-src 'self'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://wa.me; img-src 'self' data:;"
+
+# 2. REDIRECCIONES (Ejemplo de redirección permanente)
+[[redirects]]
+  from = "/old-page"
+  to = "/new-page"
+  status = 301
