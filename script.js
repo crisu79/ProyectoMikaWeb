@@ -1,3 +1,10 @@
+
+    
+    const MIKA_CONFIG = {
+        whatsappNumber: "5491168280718",
+        assetsPath: "./assets/" 
+    };
+
 function debounce(func,delay){let timeout;return function(...args){clearTimeout(timeout);timeout=setTimeout(()=>func.apply(this,args),delay)}}
 function detectTouchDevice(){const isTouch=('ontouchstart' in window)||(navigator.maxTouchPoints>0)||(navigator.msMaxTouchPoints>0);if(isTouch){document.body.classList.add('has-touch')}}
 function initializeLinks(){if(typeof MIKA_CONFIG==='undefined'||!MIKA_CONFIG.whatsappNumber){console.error("Error de Configuración: MIKA_CONFIG o whatsappNumber no están definidos.");return}
